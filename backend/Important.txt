@@ -1,0 +1,35 @@
+1. The risk is Short vs Overload, since both draw high current. Pick resistors so their current levels don’t overlap
+2. 
+
+
+
+
+
+
+
+
+
+Readings (live data)
+
+Id bigint, identity, PK
+Timestamp datetime2
+VoltageRms float
+CurrentRms float
+PredictedLabel nvarchar(20)
+Confidence float
+
+TrainingSamples (data collection)
+
+Id bigint, identity, PK
+SegmentId int, one number per state hold
+Timestamp datetime2
+VoltageRms float
+CurrentRms float
+Label nvarchar(20), with a CHECK for Normal / ShortCircuit / OpenCircuit / Overload
+
+
+Final flow
+Collection mode: ESP32 → POST /api/training-samples (with label) → TrainingSamples
+Export to CSV, train in ML.NET offline, get model.zip
+Put model.zip in the API. The ESP32 then posts to POST /api/readings (no label) → the backend predicts → saves to Readings
+React → GET /api/readings/latest every second → shows PredictedLabel
