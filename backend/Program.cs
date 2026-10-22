@@ -1,6 +1,15 @@
+using backend.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<SmartFaultDetectorDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SmartFaultDetectorDbContext")));
+
+
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
