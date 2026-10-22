@@ -32,6 +32,10 @@ namespace backend.Controllers
         public async Task<IActionResult> ReadingGetLatest()
         {
             var readingDomain = await _readingRepository.GetLatestReadingAsync(TimeSpan.FromSeconds(1));
+            if (readingDomain is null)
+            {
+                return Ok("No recent reading.");
+            }
             var readingDto = _mapper.Map<ReadingDto>(readingDomain);
             return Ok(readingDto);
         }
