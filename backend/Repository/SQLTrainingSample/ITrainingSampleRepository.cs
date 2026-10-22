@@ -8,6 +8,6 @@ namespace backend.Repository.SQLTrainingSample
 {
     public interface ITrainingSampleRepository
     {
-        Task<TrainingSample> CreateTrainingSampleAsync(TrainingSample trainingSample);
+        Task<TrainingSample> CreateTrainingSampleAsync(TrainingSample newTrainingSample);
     }
 }

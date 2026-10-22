@@ -12,7 +12,11 @@ namespace backend.Mappings
     {
         public AutoMapperProfiles()
         {
-            CreateMap<TrainingSampleDto, TrainingSample>().ReverseMap();
+            CreateMap<TrainingSample, TrainingSampleDto>();
+            CreateMap<AddTrainingSampleRequestDto, TrainingSample>();
+
+            CreateMap<Reading, ReadingDto>();
+            CreateMap<AddReadingRequestDto, Reading>();
         }
     }
 }

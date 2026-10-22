@@ -15,11 +15,11 @@ namespace backend.Repository.SQLTrainingSample
             _dbContext = dbContext;
         }
 
-        public async Task<TrainingSample> CreateTrainingSampleAsync(TrainingSample trainingSample)
+        public async Task<TrainingSample> CreateTrainingSampleAsync(TrainingSample newTrainingSample)
         {
-            await _dbContext.TrainingSamples.AddAsync(trainingSample);
+            await _dbContext.TrainingSamples.AddAsync(newTrainingSample);
             await _dbContext.SaveChangesAsync();
-            return trainingSample;
+            return newTrainingSample;
         }
     }
 }
