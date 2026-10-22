@@ -1,4 +1,5 @@
 using backend.Data;
+using backend.Repository.SQLTrainingSample;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ builder.Services.AddDbContext<SmartFaultDetectorDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SmartFaultDetectorDbContext")));
 
 
+
+builder.Services.AddScoped<ITrainingSampleRepository, TrainingSampleRepository>();
 
 
 
