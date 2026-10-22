@@ -1,5 +1,6 @@
 using backend.Data;
 using backend.Mappings;
+using backend.Repository.SQLReading;
 using backend.Repository.SQLTrainingSample;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<SmartFaultDetectorDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 builder.Services.AddScoped<ITrainingSampleRepository, TrainingSampleRepository>();
+builder.Services.AddScoped<IReadingRepository, ReadingRepository>();
 
 
 
@@ -22,6 +24,18 @@ builder.Services.AddControllers();
 //builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();  // needed for SignalR later
+    });
+});
 
 var app = builder.Build();
 
@@ -37,6 +51,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 

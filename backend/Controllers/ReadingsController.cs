@@ -34,7 +34,7 @@ namespace backend.Controllers
             var readingDomain = await _readingRepository.GetLatestReadingAsync(TimeSpan.FromSeconds(1));
             if (readingDomain is null)
             {
-                return Ok("No recent reading.");
+                return NoContent();
             }
             var readingDto = _mapper.Map<ReadingDto>(readingDomain);
             return Ok(readingDto);
