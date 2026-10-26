@@ -2,6 +2,7 @@ using AutoMapper;
 using backend.Models;
 using backend.Models.Dtos;
 using backend.Repository.SQLReading;
+using backend.Services.MLModelServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -12,11 +13,13 @@ namespace backend.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IReadingRepository _readingRepository;
+        private readonly IModelPredictionService _modelPredictionService;
 
-        public ReadingsController(IMapper mapper, IReadingRepository readingRepository)
+        public ReadingsController(IMapper mapper, IReadingRepository readingRepository, IModelPredictionService modelPredictionService)
         {
             _mapper = mapper;
             _readingRepository = readingRepository;
+            _modelPredictionService = modelPredictionService;
         }
 
         [HttpGet]
@@ -44,6 +47,11 @@ namespace backend.Controllers
         public async Task<IActionResult> ReadingCreate([FromBody] AddReadingRequestDto newReading)
         {
             var readingDomain = _mapper.Map<Reading>(newReading);
+
+            var prediction = _modelPredictionService.Predict(readingDomain.VoltageRms, readingDomain.CurrentRms);
+            readingDomain.PredictedLabel = prediction.Label;
+            readingDomain.Confidence = prediction.Confidence;
+
             readingDomain = await _readingRepository.CreateReadingAsync(readingDomain);
             var readingDto = _mapper.Map<ReadingDto>(readingDomain);
             return Ok(readingDto);

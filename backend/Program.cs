@@ -2,6 +2,7 @@ using backend.Data;
 using backend.Mappings;
 using backend.Repository.SQLReading;
 using backend.Repository.SQLTrainingSample;
+using backend.Services.MLModelServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,8 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<ITrainingSampleRepository, TrainingSampleRepository>();
 builder.Services.AddScoped<IReadingRepository, ReadingRepository>();
 
-
+builder.Services.AddScoped<IModelTrainingService, ModelTrainingService>();
+builder.Services.AddSingleton<IModelPredictionService, ModelPredictionService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -45,7 +47,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Classroom Management API v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Smart Fault Detector API v1");
         options.RoutePrefix = string.Empty; // makes Swagger UI the default page
     });
 }

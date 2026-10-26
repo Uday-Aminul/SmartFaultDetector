@@ -9,7 +9,7 @@ namespace backend.Models.Dtos
     {
         public double VoltageRms { get; set; }
         public double CurrentRms { get; set; }
-        public string PredictedLabel { get; set; } = null!;
-        public double Confidence { get; set; }
+        public string? PredictedLabel { get; set; }
+        public double? Confidence { get; set; }
     }
 }
